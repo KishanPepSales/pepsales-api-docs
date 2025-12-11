@@ -1,0 +1,89 @@
+/**
+ * LEGACY BACKUP - DO NOT EDIT
+ * Original CustomNavbar.module.css backed up before Tailwind migration
+ */
+
+.navbarItems {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbarItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: var(--ifm-navbar-link-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.navbarItem:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-navbar-link-hover-color);
+}
+
+[data-theme='dark'] .navbarItem:hover {
+  background-color: var(--ifm-color-emphasis-300);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.loginButton {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ifm-navbar-link-color);
+  background: none;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.loginButton:hover {
+  background-color: var(--ifm-color-primary);
+  color: white;
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.loginButton:active {
+  transform: translateY(0);
+}
+
+[data-theme='dark'] .loginButton {
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+[data-theme='dark'] .loginButton:hover {
+  background-color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 996px) {
+  .navbarItems {
+    gap: 0.5rem;
+  }
+  
+  .loginButton {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+}
+

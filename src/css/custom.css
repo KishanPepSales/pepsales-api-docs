@@ -1,0 +1,574 @@
+/**
+ * Tailwind CSS Migration - Main Stylesheet
+ * 
+ * This file now uses Tailwind CSS directives instead of plain CSS.
+ * Original CSS has been backed up to src/css/_legacy/
+ * 
+ * To rollback: Copy src/css/_legacy/custom.css back to this location
+ */
+
+/* Tailwind CSS Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Tailwind overrides for complex styles */
+@import './tailwind-overrides.css';
+
+/* ============================================
+   Docusaurus/Infima CSS Variables
+   (Keep these for compatibility with Docusaurus components)
+   ============================================ */
+:root {
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
+  
+  --ifm-code-font-size: 95%;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.7;
+  --ifm-heading-font-weight: 600;
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --ifm-font-family-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  
+  /* Spacing */
+  --ifm-spacing-horizontal: 1.5rem;
+  --ifm-navbar-height: 4rem;
+  
+  /* Border radius */
+  --ifm-global-radius: 8px;
+  
+  /* Shadows */
+  --ifm-global-shadow-lw: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  --ifm-global-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --ifm-global-shadow-tl: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode */
+[data-theme='dark'] {
+  --ifm-color-primary: #60a5fa;
+  --ifm-color-primary-dark: #3b82f6;
+  --ifm-color-primary-darker: #2563eb;
+  --ifm-color-primary-darkest: #1d4ed8;
+  --ifm-color-primary-light: #93c5fd;
+  --ifm-color-primary-lighter: #bfdbfe;
+  --ifm-color-primary-lightest: #dbeafe;
+  
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  
+  --ifm-background-color: #0f172a;
+  --ifm-background-surface-color: #1e293b;
+}
+
+/* ============================================
+   Tailwind Component Classes
+   (Reusable component styles using @apply)
+   ============================================ */
+@layer components {
+  /* Hero Button */
+  .hero__button {
+    @apply px-8 py-3 rounded-lg font-semibold transition-all duration-200 border-2 border-white bg-white;
+    color: var(--ifm-color-primary);
+  }
+  
+  .hero__button:hover {
+    @apply bg-transparent text-white -translate-y-0.5 shadow-lg;
+  }
+  
+  .hero__button--secondary {
+    @apply bg-transparent text-white;
+  }
+  
+  .hero__button--secondary:hover {
+    @apply bg-white;
+    color: var(--ifm-color-primary);
+  }
+  
+  /* Status Badge */
+  .status-badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-sm;
+  }
+  
+  .status-badge__dot {
+    @apply w-2 h-2 rounded-full bg-green-500 animate-pulse;
+  }
+  
+  /* Quick Link Card */
+  .quick-link-card {
+    @apply p-6 rounded-lg transition-all duration-200 block no-underline;
+    background: var(--ifm-background-surface-color);
+    border: 1px solid var(--ifm-color-emphasis-300);
+    color: var(--ifm-font-color-base);
+  }
+  
+  .quick-link-card:hover {
+    border-color: var(--ifm-color-primary);
+    box-shadow: var(--ifm-global-shadow-md);
+    @apply -translate-y-0.5;
+    text-decoration: none;
+    color: var(--ifm-font-color-base);
+  }
+  
+  .quick-link-card h3 {
+    @apply mt-0;
+    color: var(--ifm-color-primary);
+  }
+  
+  /* Swagger UI Wrapper */
+  .swagger-ui-wrapper {
+    @apply my-8 rounded-lg overflow-hidden;
+    box-shadow: var(--ifm-global-shadow-md);
+    background: var(--ifm-background-color);
+  }
+  
+  .swagger-container {
+    @apply my-8;
+  }
+}
+
+/* ============================================
+   Complex Styles (Swagger UI, etc.)
+   (Keep these as they require specific selectors)
+   ============================================ */
+.swagger-ui-wrapper .swagger-ui {
+  font-family: var(--ifm-font-family-base);
+}
+
+.swagger-ui-wrapper .swagger-ui .info {
+  @apply my-8 p-6 rounded-lg;
+  background: var(--ifm-background-surface-color);
+}
+
+.swagger-ui-wrapper .swagger-ui .info .title {
+  @apply text-3xl font-semibold;
+  color: var(--ifm-heading-color);
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock {
+  @apply rounded-lg my-4 transition-all duration-200;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  box-shadow: var(--ifm-global-shadow-lw);
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock:hover {
+  box-shadow: var(--ifm-global-shadow-md);
+  @apply -translate-y-0.5;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-post {
+  @apply border-l-4;
+  border-left-color: #49cc90;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-get {
+  @apply border-l-4;
+  border-left-color: #61affe;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-put {
+  @apply border-l-4;
+  border-left-color: #fca130;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-delete {
+  @apply border-l-4;
+  border-left-color: #f93e3e;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock-tag {
+  @apply text-xl font-semibold p-4 m-0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock-summary {
+  @apply px-6 py-4;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock-description-wrapper {
+  @apply p-6;
+}
+
+.swagger-ui-wrapper .swagger-ui .btn {
+  @apply rounded-md font-medium transition-all duration-200;
+}
+
+.swagger-ui-wrapper .swagger-ui .btn.execute {
+  background-color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+}
+
+.swagger-ui-wrapper .swagger-ui .btn.execute:hover {
+  background-color: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary-dark);
+}
+
+/* Dark mode Swagger UI adjustments */
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui {
+  background: var(--ifm-background-color);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .scheme-container {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock.opblock-is-open {
+  background: var(--ifm-background-surface-color);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock-body {
+  background: var(--ifm-background-color);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .response-col_status {
+  color: var(--ifm-color-content);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .response-col_description {
+  color: var(--ifm-color-content-secondary);
+}
+
+/* ============================================
+   Typography & Layout
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-semibold leading-tight mt-8 mb-4;
+}
+
+h1 {
+  @apply text-4xl mt-0;
+}
+
+h2 {
+  @apply text-3xl pb-2;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+h3 {
+  @apply text-2xl;
+}
+
+code {
+  @apply text-[0.9em] px-1.5 py-0.5 rounded;
+  background-color: var(--ifm-code-background);
+}
+
+pre code {
+  @apply p-0;
+  background-color: transparent;
+}
+
+.main-wrapper {
+  @apply flex flex-col min-h-screen;
+}
+
+.markdown {
+  @apply max-w-none;
+}
+
+.markdown > h1:first-child {
+  @apply mt-0;
+}
+
+article {
+  @apply pb-12;
+}
+
+/* ============================================
+   Cards & Badges
+   ============================================ */
+.card {
+  @apply rounded-lg transition-all duration-200;
+  box-shadow: var(--ifm-global-shadow-lw);
+  border: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.card:hover {
+  box-shadow: var(--ifm-global-shadow-md);
+  @apply -translate-y-0.5;
+}
+
+.badge {
+  @apply inline-block font-medium px-2 py-1 rounded-md text-sm leading-none align-middle;
+}
+
+.badge--info {
+  background-color: var(--ifm-color-info);
+  color: var(--ifm-color-info-contrast-background);
+}
+
+.badge--success {
+  background-color: var(--ifm-color-success);
+  color: var(--ifm-color-success-contrast-background);
+}
+
+.badge--warning {
+  background-color: var(--ifm-color-warning);
+  color: var(--ifm-color-warning-contrast-background);
+}
+
+.badge--danger {
+  background-color: var(--ifm-color-danger);
+  color: var(--ifm-color-danger-contrast-background);
+}
+
+.badge--primary {
+  background-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary-contrast-background);
+}
+
+[data-theme='dark'] .badge--info {
+  background-color: var(--ifm-color-info-dark);
+}
+
+[data-theme='dark'] .badge--success {
+  background-color: var(--ifm-color-success-dark);
+}
+
+[data-theme='dark'] .badge--warning {
+  background-color: var(--ifm-color-warning-dark);
+}
+
+[data-theme='dark'] .badge--danger {
+  background-color: var(--ifm-color-danger-dark);
+}
+
+[data-theme='dark'] .badge--primary {
+  background-color: var(--ifm-color-primary-dark);
+}
+
+/* ============================================
+   Navbar & Sidebar
+   ============================================ */
+.navbar {
+  @apply py-2 px-4;
+  box-shadow: var(--ifm-global-shadow-lw);
+}
+
+.navbar__logo {
+  @apply h-8 mr-4;
+}
+
+.navbar__title {
+  @apply font-semibold transition-opacity duration-200;
+  color: var(--ifm-font-color-base);
+}
+
+.navbar__title:hover {
+  @apply opacity-80;
+}
+
+.navbar__brand {
+  @apply no-underline;
+  color: var(--ifm-font-color-base);
+}
+
+.navbar__brand:hover {
+  @apply no-underline opacity-80;
+  color: var(--ifm-font-color-base);
+}
+
+.navbar__item {
+  @apply font-medium;
+}
+
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* ============================================
+   Breadcrumb Navigation
+   ============================================ */
+.breadcrumbs {
+  @apply flex items-center;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem;
+}
+
+.breadcrumbs__item {
+  @apply flex items-center;
+  display: flex !important;
+  align-items: center !important;
+  line-height: 1.5;
+}
+
+.breadcrumbs__link {
+  @apply flex items-center;
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle;
+  line-height: 1.5;
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  @apply flex items-center;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.breadcrumbs__item svg,
+.breadcrumbs__item .breadcrumbs__link svg {
+  @apply flex items-center;
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.breadcrumbs__item::after,
+.breadcrumbs__separator {
+  @apply flex items-center;
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle;
+  line-height: 1.5;
+}
+
+/* Ensure all breadcrumb content is vertically centered */
+.breadcrumbs__item > * {
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+}
+
+.menu__link {
+  @apply rounded-md transition-all duration-200;
+}
+
+.menu__link:hover {
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+.menu__link--active {
+  background-color: var(--ifm-color-primary);
+  @apply text-white;
+}
+
+.menu__link--active:hover {
+  background-color: var(--ifm-color-primary-dark);
+}
+
+.menu__list-item-collapsible {
+  @apply font-semibold mt-4;
+}
+
+.menu__list-item-collapsible .menu__link {
+  @apply font-bold;
+  color: var(--ifm-font-color-base);
+}
+
+.menu__list-item-collapsible .menu__link:hover {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='dark'] .menu__list-item-collapsible .menu__link {
+  color: var(--ifm-font-color-base);
+}
+
+.prism-code {
+  @apply rounded-lg;
+  box-shadow: var(--ifm-global-shadow-lw);
+}
+
+/* ============================================
+   Pagination Navigation (Previous/Next)
+   ============================================ */
+.pagination-nav {
+  @apply mt-12 mb-8;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.pagination-nav__link {
+  @apply rounded-lg border transition-all duration-200;
+  border-color: var(--ifm-color-emphasis-300);
+  background-color: var(--ifm-background-surface-color);
+  padding: 1rem 1.25rem;
+  text-decoration: none !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: var(--ifm-global-shadow-lw);
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-emphasis-100);
+  box-shadow: var(--ifm-global-shadow-md);
+  @apply -translate-y-0.5;
+  text-decoration: none !important;
+  color: var(--ifm-color-content);
+}
+
+.pagination-nav__link--next {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.pagination-nav__link--prev {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.pagination-nav__label {
+  @apply text-sm font-medium;
+  color: var(--ifm-color-content-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pagination-nav__link:hover .pagination-nav__label {
+  color: var(--ifm-color-primary);
+}
+
+.pagination-nav__sublabel {
+  @apply text-base font-semibold;
+  color: var(--ifm-color-content);
+  margin: 0;
+}
+
+.pagination-nav__link:hover .pagination-nav__sublabel {
+  color: var(--ifm-color-primary);
+}
+
+/* Responsive: Stack on mobile */
+@media (max-width: 768px) {
+  .pagination-nav {
+    grid-template-columns: 1fr;
+  }
+  
+  .pagination-nav__link--next {
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 996px) {
+  h1 {
+    @apply text-3xl;
+  }
+  
+  h2 {
+    @apply text-2xl;
+  }
+  
+  .swagger-ui-wrapper {
+    @apply my-4;
+  }
+}

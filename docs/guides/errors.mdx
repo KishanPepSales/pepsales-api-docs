@@ -1,0 +1,161 @@
+---
+id: errors
+title: Error Handling
+sidebar_position: 3
+---
+
+# Error Handling
+
+The API uses conventional HTTP response codes and returns errors in a consistent JSON format.
+
+## HTTP Status Codes
+
+| Status Code | Meaning |
+|-------------|---------|
+| `200` | Success |
+| `201` | Created |
+| `400` | Bad Request - Invalid parameters |
+| `401` | Unauthorized - Missing or invalid authentication |
+| `403` | Forbidden - Insufficient permissions |
+| `404` | Not Found - Resource doesn't exist |
+| `429` | Too Many Requests - Rate limit exceeded |
+| `500` | Internal Server Error - Server error |
+
+## Error Response Format
+
+All errors follow a consistent structure:
+
+```json
+{
+  "error": {
+    "code": "error_code",
+    "message": "Human-readable error message",
+    "details": {
+      "field": "Additional error details"
+    }
+  }
+}
+```
+
+## Common Error Codes
+
+### `validation_error`
+
+Returned when request parameters are invalid:
+
+```json
+{
+  "error": {
+    "code": "validation_error",
+    "message": "Invalid request parameters",
+    "details": {
+      "username": "Username is required",
+      "email": "Invalid email format"
+    }
+  }
+}
+```
+
+### `unauthorized`
+
+Returned when authentication fails:
+
+```json
+{
+  "error": {
+    "code": "unauthorized",
+    "message": "Invalid or expired token"
+  }
+}
+```
+
+### `not_found`
+
+Returned when a resource doesn't exist:
+
+```json
+{
+  "error": {
+    "code": "not_found",
+    "message": "Resource not found"
+  }
+}
+```
+
+### `rate_limit_exceeded`
+
+Returned when rate limits are exceeded:
+
+```json
+{
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "Rate limit exceeded. Please try again later.",
+    "retry_after": 60
+  }
+}
+```
+
+## Handling Errors
+
+### JavaScript Example
+
+```javascript
+async function handleRequest(url, options) {
+  try {
+    const response = await fetch(url, options);
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error.message);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('API Error:', error.message);
+    throw error;
+  }
+}
+```
+
+### Python Example
+
+```python
+import requests
+
+def handle_request(url, headers=None):
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.HTTPError as e:
+        error_data = response.json()
+        print(f"API Error: {error_data['error']['message']}")
+        raise
+```
+
+## Retry Logic
+
+For transient errors (5xx status codes), implement retry logic with exponential backoff:
+
+```javascript
+async function requestWithRetry(url, options, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok) return response;
+      
+      if (response.status >= 500 && i < maxRetries - 1) {
+        const delay = Math.pow(2, i) * 1000; // Exponential backoff
+        await new Promise(resolve => setTimeout(resolve, delay));
+        continue;
+      }
+      
+      throw new Error(`Request failed: ${response.status}`);
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+    }
+  }
+}
+```
+

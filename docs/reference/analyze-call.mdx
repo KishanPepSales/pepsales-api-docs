@@ -1,0 +1,329 @@
+---
+id: analyze-call
+title: Analyze Call
+sidebar_position: 2
+---
+
+# POST /v1/analyze_call
+
+Analyze a sales call transcript to extract insights, MEDDIC metrics, objections, next steps, deal risk, and generate CRM actions.
+
+## Authentication
+
+This endpoint requires authentication. Include your bearer token in the Authorization header.
+
+## Request
+
+```bash
+curl -X POST "https://api1.pepsales.xyz/v1/analyze_call" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "transcript": [
+      {"speaker": "A", "text": "Hello, how are you?", "timestamp": 0},
+      {"speaker": "B", "text": "Good, we are worried about pricing.", "timestamp": 5}
+    ],
+    "metadata": {
+      "crm_deal_id": "12345",
+      "call_type": "discovery"
+    },
+    "webhook_url": "https://client-app.com/hooks/sales-ai"
+  }'
+```
+
+## Request Body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `transcript` | array | Yes | Array of transcript entries with speaker, text, and timestamp |
+| `transcript[].speaker` | string | Yes | Speaker identifier (e.g., "A", "B", "Sales Rep", "Prospect") |
+| `transcript[].text` | string | Yes | The spoken text content |
+| `transcript[].timestamp` | number | Yes | Timestamp in seconds from call start |
+| `metadata` | object | No | Additional metadata about the call |
+| `metadata.crm_deal_id` | string | No | CRM deal/opportunity ID |
+| `metadata.call_type` | string | No | Type of call (e.g., "discovery", "demo", "negotiation") |
+| `webhook_url` | string | No | URL to receive webhook notification when analysis completes |
+
+## Response
+
+**200 OK**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "summary": "Discovery call focused on pricing concerns and revenue growth objectives. Budget constraints identified as primary objection.",
+    "meddic": {
+      "metrics": {
+        "value": "Increase revenue by 10%",
+        "evidence_quote": "We need to hit 10% growth.",
+        "confidence": 0.9
+      },
+      "economic_buyer": {
+        "name": "John Doe",
+        "status": "identified"
+      },
+      "champion": {
+        "name": "Jane Smith",
+        "status": "identified"
+      },
+      "decision_criteria": [
+        {
+          "criterion": "Security compliance",
+          "priority": "high"
+        }
+      ],
+      "decision_process": {
+        "timeline": "Q2 2025",
+        "steps": ["Security review", "Budget approval", "Final decision"]
+      },
+      "identify_pain": [
+        {
+          "pain": "Current solution lacks scalability",
+          "severity": "high"
+        }
+      ],
+      "champion": {
+        "name": "Jane Smith",
+        "influence_level": "high"
+      }
+    },
+    "objections": [
+      {
+        "category": "pricing",
+        "sub_category": "budget_constraint",
+        "quote": "We are worried about pricing",
+        "timestamp": 5,
+        "handled_effectively": false
+      }
+    ],
+    "next_steps": [
+      {
+        "action": "Send security whitepaper",
+        "owner": "sales_rep",
+        "deadline": "2025-10-12"
+      },
+      {
+        "action": "Schedule ROI calculator demo",
+        "owner": "sales_rep",
+        "deadline": "2025-10-15"
+      }
+    ],
+    "deal_risk": {
+      "score": 75,
+      "risk_factors": [
+        "No economic buyer present",
+        "Budget unclear"
+      ],
+      "recommendations": [
+        "Engage with CFO for budget discussion",
+        "Provide ROI analysis to address pricing concerns"
+      ]
+    },
+    "crm_actions": [
+      {
+        "action": "update_field",
+        "target": "opportunity",
+        "field": "Budget_Status__c",
+        "value": "At Risk"
+      },
+      {
+        "action": "create_task",
+        "subject": "Send ROI Calculator (Address Price Objection)",
+        "due_date": "2025-05-12",
+        "priority": "High"
+      },
+      {
+        "action": "update_field",
+        "target": "opportunity",
+        "field": "Deal_Risk_Score__c",
+        "value": 75
+      }
+    ]
+  }
+}
+```
+
+## Response Fields
+
+### Summary
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `summary` | string | High-level summary of the call |
+
+### MEDDIC Metrics
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `meddic.metrics.value` | string | Identified value proposition |
+| `meddic.metrics.evidence_quote` | string | Supporting quote from transcript |
+| `meddic.metrics.confidence` | number | Confidence score (0-1) |
+| `meddic.economic_buyer.name` | string | Name of economic buyer |
+| `meddic.economic_buyer.status` | string | Status: "identified", "not_identified", "unknown" |
+| `meddic.champion.name` | string | Name of champion |
+| `meddic.champion.status` | string | Status: "identified", "not_identified", "unknown" |
+| `meddic.champion.influence_level` | string | Influence level: "high", "medium", "low" |
+| `meddic.decision_criteria` | array | Array of decision criteria objects |
+| `meddic.decision_process.timeline` | string | Expected decision timeline |
+| `meddic.decision_process.steps` | array | Array of decision process steps |
+| `meddic.identify_pain` | array | Array of identified pain points |
+
+### Objections
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `objections[].category` | string | Objection category (e.g., "pricing", "timing", "authority") |
+| `objections[].sub_category` | string | Specific sub-category of objection |
+| `objections[].quote` | string | Direct quote from transcript |
+| `objections[].timestamp` | number | Timestamp when objection was raised |
+| `objections[].handled_effectively` | boolean | Whether the objection was handled effectively |
+
+### Next Steps
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `next_steps[].action` | string | Action item description |
+| `next_steps[].owner` | string | Owner of the action (e.g., "sales_rep", "prospect") |
+| `next_steps[].deadline` | string | ISO 8601 date for deadline |
+
+### Deal Risk
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `deal_risk.score` | integer | Risk score from 0-100 (higher = more risk) |
+| `deal_risk.risk_factors` | array | Array of identified risk factors |
+| `deal_risk.recommendations` | array | Recommended actions to mitigate risk |
+
+### CRM Actions
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `crm_actions[].action` | string | Action type: "update_field", "create_task", "create_note" |
+| `crm_actions[].target` | string | Target object (e.g., "opportunity", "account") |
+| `crm_actions[].field` | string | Field name to update (for update_field actions) |
+| `crm_actions[].value` | string | Value to set (for update_field actions) |
+| `crm_actions[].subject` | string | Task/subject title (for create_task actions) |
+| `crm_actions[].due_date` | string | ISO 8601 date for task deadline |
+| `crm_actions[].priority` | string | Priority level: "High", "Medium", "Low" |
+
+## Error Responses
+
+**400 Bad Request** - Invalid request format
+
+```json
+{
+  "status": "error",
+  "error": {
+    "code": "validation_error",
+    "message": "Invalid request parameters",
+    "details": {
+      "transcript": "Transcript array is required and must not be empty"
+    }
+  }
+}
+```
+
+**401 Unauthorized** - Missing or invalid token
+
+```json
+{
+  "status": "error",
+  "error": {
+    "code": "unauthorized",
+    "message": "Invalid or expired token"
+  }
+}
+```
+
+**429 Too Many Requests** - Rate limit exceeded
+
+```json
+{
+  "status": "error",
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "Too many requests. Please try again later.",
+    "retry_after": 60
+  }
+}
+```
+
+## Example Usage
+
+### JavaScript
+
+```javascript
+const response = await fetch('https://api1.pepsales.xyz/v1/analyze_call', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    transcript: [
+      { speaker: "A", text: "Hello, how are you?", timestamp: 0 },
+      { speaker: "B", text: "Good, we are worried about pricing.", timestamp: 5 }
+    ],
+    metadata: {
+      crm_deal_id: "12345",
+      call_type: "discovery"
+    },
+    webhook_url: "https://client-app.com/hooks/sales-ai"
+  })
+});
+
+const result = await response.json();
+
+if (result.status === 'success') {
+  console.log('Deal Risk Score:', result.data.deal_risk.score);
+  console.log('Objections Found:', result.data.objections.length);
+  console.log('Next Steps:', result.data.next_steps);
+  console.log('CRM Actions:', result.data.crm_actions);
+}
+```
+
+### Python
+
+```python
+import requests
+
+response = requests.post(
+    'https://api1.pepsales.xyz/v1/analyze_call',
+    headers={
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    },
+    json={
+        'transcript': [
+            {'speaker': 'A', 'text': 'Hello, how are you?', 'timestamp': 0},
+            {'speaker': 'B', 'text': 'Good, we are worried about pricing.', 'timestamp': 5}
+        ],
+        'metadata': {
+            'crm_deal_id': '12345',
+            'call_type': 'discovery'
+        },
+        'webhook_url': 'https://client-app.com/hooks/sales-ai'
+    }
+)
+
+result = response.json()
+
+if result['status'] == 'success':
+    data = result['data']
+    print(f"Deal Risk Score: {data['deal_risk']['score']}")
+    print(f"Objections Found: {len(data['objections'])}")
+    print(f"Next Steps: {data['next_steps']}")
+    print(f"CRM Actions: {data['crm_actions']}")
+```
+
+## Notes
+
+- The analysis is performed asynchronously. If a `webhook_url` is provided, you'll receive a notification when the analysis completes.
+- The `deal_risk.score` ranges from 0-100, where:
+  - 0-30: Low risk
+  - 31-60: Medium risk
+  - 61-100: High risk
+- CRM actions are formatted for common CRM systems (Salesforce, HubSpot, etc.) and may need to be adapted for your specific CRM.
+- The MEDDIC framework analysis extracts key sales qualification metrics to help prioritize and manage opportunities.
+

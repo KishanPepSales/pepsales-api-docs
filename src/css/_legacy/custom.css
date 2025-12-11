@@ -1,0 +1,543 @@
+/**
+ * LEGACY BACKUP - DO NOT EDIT
+ * Original custom.css file backed up before Tailwind migration
+ * Date: Migration backup
+ * 
+ * To restore: copy this file back to src/css/custom.css
+ */
+
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* ============================================
+   Modern Color Scheme & Theme Variables
+   ============================================ */
+:root {
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
+  
+  --ifm-code-font-size: 95%;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.7;
+  --ifm-heading-font-weight: 600;
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --ifm-font-family-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  
+  /* Spacing */
+  --ifm-spacing-horizontal: 1.5rem;
+  --ifm-navbar-height: 4rem;
+  
+  /* Border radius */
+  --ifm-global-radius: 8px;
+  
+  /* Shadows */
+  --ifm-global-shadow-lw: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  --ifm-global-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --ifm-global-shadow-tl: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode */
+[data-theme='dark'] {
+  --ifm-color-primary: #60a5fa;
+  --ifm-color-primary-dark: #3b82f6;
+  --ifm-color-primary-darker: #2563eb;
+  --ifm-color-primary-darkest: #1d4ed8;
+  --ifm-color-primary-light: #93c5fd;
+  --ifm-color-primary-lighter: #bfdbfe;
+  --ifm-color-primary-lightest: #dbeafe;
+  
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  
+  --ifm-background-color: #0f172a;
+  --ifm-background-surface-color: #1e293b;
+}
+
+/* ============================================
+   Typography Improvements
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 2rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  padding-bottom: 0.5rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+/* Code blocks */
+code {
+  font-size: 0.9em;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  background-color: var(--ifm-code-background);
+}
+
+pre code {
+  padding: 0;
+  background-color: transparent;
+}
+
+/* ============================================
+   Layout & Spacing
+   ============================================ */
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.markdown {
+  max-width: none;
+}
+
+.markdown > h1:first-child {
+  margin-top: 0;
+}
+
+/* Better spacing for content */
+article {
+  padding-bottom: 3rem;
+}
+
+/* ============================================
+   Swagger UI Integration
+   ============================================ */
+.swagger-ui-wrapper {
+  margin: 2rem 0;
+  border-radius: var(--ifm-global-radius);
+  overflow: hidden;
+  box-shadow: var(--ifm-global-shadow-md);
+  background: var(--ifm-background-color);
+}
+
+.swagger-container {
+  margin: 2rem 0;
+}
+
+/* Swagger UI theme customization */
+.swagger-ui-wrapper .swagger-ui {
+  font-family: var(--ifm-font-family-base);
+}
+
+.swagger-ui-wrapper .swagger-ui .info {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--ifm-background-surface-color);
+  border-radius: var(--ifm-global-radius);
+}
+
+.swagger-ui-wrapper .swagger-ui .info .title {
+  color: var(--ifm-heading-color);
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock {
+  border-radius: var(--ifm-global-radius);
+  margin: 1rem 0;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  box-shadow: var(--ifm-global-shadow-lw);
+  transition: all 0.2s ease;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock:hover {
+  box-shadow: var(--ifm-global-shadow-md);
+  transform: translateY(-1px);
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-post {
+  border-left: 4px solid #49cc90;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-get {
+  border-left: 4px solid #61affe;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-put {
+  border-left: 4px solid #fca130;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-delete {
+  border-left: 4px solid #f93e3e;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock-tag {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 1rem;
+  margin: 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock-summary {
+  padding: 1rem 1.5rem;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock-description-wrapper {
+  padding: 1.5rem;
+}
+
+.swagger-ui-wrapper .swagger-ui .btn {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.swagger-ui-wrapper .swagger-ui .btn.execute {
+  background-color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+}
+
+.swagger-ui-wrapper .swagger-ui .btn.execute:hover {
+  background-color: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary-dark);
+}
+
+/* Dark mode Swagger UI adjustments */
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui {
+  background: var(--ifm-background-color);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .scheme-container {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock.opblock-is-open {
+  background: var(--ifm-background-surface-color);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock-body {
+  background: var(--ifm-background-color);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .response-col_status {
+  color: var(--ifm-color-content);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .response-col_description {
+  color: var(--ifm-color-content-secondary);
+}
+
+/* ============================================
+   Cards & Containers
+   ============================================ */
+.card {
+  border-radius: var(--ifm-global-radius);
+  box-shadow: var(--ifm-global-shadow-lw);
+  transition: all 0.2s ease;
+  border: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.card:hover {
+  box-shadow: var(--ifm-global-shadow-md);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   Badges
+   ============================================ */
+.badge {
+  display: inline-block;
+  font-weight: 500;
+  padding: 0.4em 0.8em;
+  border-radius: 6px;
+  font-size: 0.875em;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.badge--info {
+  background-color: var(--ifm-color-info);
+  color: var(--ifm-color-info-contrast-background);
+}
+
+.badge--success {
+  background-color: var(--ifm-color-success);
+  color: var(--ifm-color-success-contrast-background);
+}
+
+.badge--warning {
+  background-color: var(--ifm-color-warning);
+  color: var(--ifm-color-warning-contrast-background);
+}
+
+.badge--danger {
+  background-color: var(--ifm-color-danger);
+  color: var(--ifm-color-danger-contrast-background);
+}
+
+.badge--primary {
+  background-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary-contrast-background);
+}
+
+[data-theme='dark'] .badge--info {
+  background-color: var(--ifm-color-info-dark);
+}
+
+[data-theme='dark'] .badge--success {
+  background-color: var(--ifm-color-success-dark);
+}
+
+[data-theme='dark'] .badge--warning {
+  background-color: var(--ifm-color-warning-dark);
+}
+
+[data-theme='dark'] .badge--danger {
+  background-color: var(--ifm-color-danger-dark);
+}
+
+[data-theme='dark'] .badge--primary {
+  background-color: var(--ifm-color-primary-dark);
+}
+
+/* ============================================
+   Navbar Improvements
+   ============================================ */
+.navbar {
+  box-shadow: var(--ifm-global-shadow-lw);
+  padding: 0.5rem 1rem;
+}
+
+.navbar__logo {
+  height: 2rem;
+  margin-right: 1rem;
+}
+
+.navbar__title {
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  transition: opacity 0.2s ease;
+}
+
+.navbar__title:hover {
+  opacity: 0.8;
+}
+
+.navbar__brand {
+  text-decoration: none;
+  color: var(--ifm-font-color-base);
+}
+
+.navbar__brand:hover {
+  text-decoration: none;
+  color: var(--ifm-font-color-base);
+  opacity: 0.8;
+}
+
+.navbar__item {
+  font-weight: 500;
+}
+
+/* ============================================
+   Sidebar Improvements
+   ============================================ */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.menu__link {
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.menu__link:hover {
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+.menu__link--active {
+  background-color: var(--ifm-color-primary);
+  color: white;
+}
+
+.menu__link--active:hover {
+  background-color: var(--ifm-color-primary-dark);
+}
+
+.menu__list-item-collapsible {
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.menu__list-item-collapsible .menu__link {
+  color: var(--ifm-font-color-base);
+  font-weight: 600;
+}
+
+.menu__list-item-collapsible .menu__link:hover {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='dark'] .menu__list-item-collapsible .menu__link {
+  color: var(--ifm-font-color-base);
+}
+
+/* ============================================
+   Code Blocks
+   ============================================ */
+.prism-code {
+  border-radius: var(--ifm-global-radius);
+  box-shadow: var(--ifm-global-shadow-lw);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 996px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  .swagger-ui-wrapper {
+    margin: 1rem 0;
+  }
+}
+
+/* ============================================
+   Homepage Hero Section
+   ============================================ */
+.hero {
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
+  padding: 4rem 0;
+  color: white;
+}
+
+.hero__title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero__subtitle {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.hero__buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero__button {
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: 2px solid white;
+  background: white;
+  color: var(--ifm-color-primary);
+}
+
+.hero__button:hover {
+  background: transparent;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.hero__button--secondary {
+  background: transparent;
+  color: white;
+}
+
+.hero__button--secondary:hover {
+  background: white;
+  color: var(--ifm-color-primary);
+}
+
+/* Status badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  font-size: 0.9rem;
+}
+
+.status-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Quick links grid */
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 3rem 0;
+}
+
+.quick-link-card {
+  padding: 1.5rem;
+  border-radius: var(--ifm-global-radius);
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: block;
+  color: var(--ifm-font-color-base);
+}
+
+.quick-link-card:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: var(--ifm-global-shadow-md);
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: var(--ifm-font-color-base);
+}
+
+.quick-link-card h3 {
+  margin-top: 0;
+  color: var(--ifm-color-primary);
+}
+

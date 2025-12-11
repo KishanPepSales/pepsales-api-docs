@@ -1,0 +1,47 @@
+---
+id: api-reference
+title: Interactive API Reference
+sidebar_position: 5
+---
+
+import SwaggerUIWrapper from '@site/src/components/SwaggerUIWrapper';
+
+# Interactive API Reference
+
+Explore all available endpoints with our interactive API documentation powered by Swagger UI. You can test endpoints directly from your browser, view request/response examples, and understand the API structure.
+
+## API Version
+
+<span className="badge badge--info">v1</span> Current stable version
+
+## Getting Started
+
+1. **Authenticate**: Start by obtaining an access token using the [`POST /auth/login`](./auth#post-authlogin) endpoint with your email and password
+2. **Explore Endpoints**: Browse the endpoints below organized by category
+3. **Try It Out**: Click "Try it out" on any endpoint to test it with your credentials
+4. **View Examples**: See request/response examples for each endpoint
+
+:::tip
+All authenticated endpoints require a bearer token. Include it in the Authorization header:
+```
+Authorization: Bearer YOUR_TOKEN
+```
+:::
+
+## Endpoints
+
+The API is organized into the following categories:
+
+- **Authentication** - User authentication and token management
+- **Analyze Call** - Sales call analysis and insights extraction
+
+<div className="swagger-container">
+  <SwaggerUIWrapper specUrl="/openapi/openapi-dummy.yaml" />
+</div>
+
+## Need Help?
+
+- Check out our [Authentication Guide](../guides/authentication) for detailed auth instructions
+- Review [Error Handling](../guides/errors) to understand API error responses
+- See [Rate Limits](../guides/rate-limits) for information about API usage limits
+

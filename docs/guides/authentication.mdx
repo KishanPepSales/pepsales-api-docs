@@ -1,0 +1,79 @@
+---
+id: authentication
+title: Authentication
+sidebar_position: 1
+---
+
+# Authentication
+
+All API requests require authentication using an API key or bearer token. This guide explains how to authenticate your requests.
+
+## API Keys
+
+API keys are used to authenticate requests to the API. You can generate API keys from your dashboard.
+
+### Using API Keys
+
+Include your API key in the request header:
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.example.com/v1/users
+```
+
+### Security Best Practices
+
+- **Never commit API keys to version control**
+- **Rotate keys regularly**
+- **Use environment variables** to store keys
+- **Restrict key permissions** to only what's needed
+
+## Bearer Tokens
+
+For user-specific operations, you can use bearer tokens obtained through the login endpoint.
+
+### Obtaining a Token
+
+```bash
+curl -X POST https://api.example.com/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "your_username",
+    "password": "your_password"
+  }'
+```
+
+The response will include a `token` field:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+### Using Bearer Tokens
+
+Include the token in the Authorization header:
+
+```bash
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+  https://api.example.com/v1/users
+```
+
+## Token Expiration
+
+Bearer tokens expire after 24 hours. You'll need to refresh your token by logging in again when it expires.
+
+## Error Responses
+
+If authentication fails, you'll receive a `401 Unauthorized` response:
+
+```json
+{
+  "error": {
+    "code": "unauthorized",
+    "message": "Invalid or expired token"
+  }
+}
+```
+

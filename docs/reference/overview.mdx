@@ -1,0 +1,60 @@
+---
+id: overview
+title: API Overview
+sidebar_position: 1
+---
+
+# API Overview
+
+Welcome to the API Reference. This section provides detailed documentation for all available endpoints.
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://api1.pepsales.xyz
+```
+
+Note: The login endpoint is at `/auth/login` (without version prefix), while other endpoints like analyze_call use the `/v1/` prefix.
+
+## API Versioning
+
+The API is versioned using the URL path. The current version is **v1**.
+
+When we release breaking changes, we'll introduce a new version (e.g., v2) while maintaining backward compatibility with previous versions.
+
+## Request Format
+
+All requests should include:
+
+- **Content-Type**: `application/json`
+- **Authorization**: `Bearer YOUR_TOKEN` (for authenticated endpoints)
+
+## Response Format
+
+All successful responses return JSON with the following structure:
+
+```json
+{
+  "data": { ... },
+  "meta": {
+    "timestamp": "2024-01-01T00:00:00Z"
+  }
+}
+```
+
+## Endpoints by Category
+
+### Authentication
+
+- [`POST /auth/login`](./auth#post-authlogin) - Authenticate with email and password to receive an access token
+
+### Analyze Call
+
+- [`POST /v1/analyze_call`](./analyze-call#post-v1analyze_call) - Analyze a sales call transcript to extract insights, MEDDIC metrics, objections, next steps, deal risk, and generate CRM actions
+
+## Interactive Documentation
+
+Use the [Interactive API Reference](./api-reference) to explore endpoints, view request/response examples, and test API calls directly from your browser.
+

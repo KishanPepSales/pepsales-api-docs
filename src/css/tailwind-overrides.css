@@ -1,0 +1,115 @@
+/**
+ * Tailwind Overrides
+ * 
+ * Complex styles that cannot be easily converted to Tailwind utilities.
+ * These include:
+ * - Complex selectors (nested, combinators)
+ * - Pseudo-elements (:before, :after)
+ * - Advanced animations
+ * - Third-party component overrides (Swagger UI)
+ */
+
+/* ============================================
+   Custom Scrollbar Styles
+   ============================================ */
+.tokenContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tokenContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tokenContainer::-webkit-scrollbar-thumb {
+  background: var(--ifm-color-emphasis-400);
+  border-radius: 3px;
+}
+
+.tokenContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--ifm-color-emphasis-500);
+}
+
+/* ============================================
+   Complex Animations
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes copySuccess {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ============================================
+   Third-party Component Overrides
+   (Swagger UI - complex nested selectors)
+   ============================================ */
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-post {
+  border-left: 4px solid #49cc90;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-get {
+  border-left: 4px solid #61affe;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-put {
+  border-left: 4px solid #fca130;
+}
+
+.swagger-ui-wrapper .swagger-ui .opblock.opblock-delete {
+  border-left: 4px solid #f93e3e;
+}
+
+/* Additional Swagger UI overrides if needed */
+.swagger-ui-wrapper .swagger-ui table {
+  border-collapse: collapse;
+}
+
+.swagger-ui-wrapper .swagger-ui table thead tr th {
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+

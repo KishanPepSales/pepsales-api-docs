@@ -1,0 +1,416 @@
+openapi: 3.0.3
+info:
+  title: API Documentation
+  description: |
+    Comprehensive REST API for building powerful applications.
+    
+    ## Authentication
+    Most endpoints require authentication. Include your bearer token in the Authorization header:
+    ```
+    Authorization: Bearer YOUR_TOKEN
+    ```
+    
+    ## Rate Limits
+    API requests are rate-limited. Check the `X-RateLimit-*` headers in responses for current limits.
+    
+    ## Base URL
+    All requests should be made to the base URL with the version prefix:
+    ```
+    https://api1.pepsales.xyz
+    ```
+  version: "1.0.0"
+  contact:
+    name: API Support
+    email: support@example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api1.pepsales.xyz
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: User authentication and token management
+  - name: Analyze Call
+    description: Sales call analysis and insights
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: Authenticate a user with email and password to receive an access token for API requests.
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  description: User's password
+                  example: securepassword123
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        description: JWT access token
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                      refresh_token:
+                        type: string
+                        description: Refresh token for obtaining new access tokens
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: John Doe
+                          email:
+                            type: string
+                            format: email
+                            example: user@example.com
+        '400':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too many login attempts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/analyze_call:
+    post:
+      tags:
+        - Analyze Call
+      summary: Analyze sales call transcript
+      description: |
+        Analyze a sales call transcript to extract insights, MEDDIC metrics, objections, next steps, deal risk, and generate CRM actions.
+        
+        The analysis is performed asynchronously. If a `webhook_url` is provided, you'll receive a notification when the analysis completes.
+      operationId: analyzeCall
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - transcript
+              properties:
+                transcript:
+                  type: array
+                  description: Array of transcript entries with speaker, text, and timestamp
+                  items:
+                    type: object
+                    required:
+                      - speaker
+                      - text
+                      - timestamp
+                    properties:
+                      speaker:
+                        type: string
+                        description: Speaker identifier (e.g., "A", "B", "Sales Rep", "Prospect")
+                        example: A
+                      text:
+                        type: string
+                        description: The spoken text content
+                        example: Hello, how are you?
+                      timestamp:
+                        type: number
+                        description: Timestamp in seconds from call start
+                        example: 0
+                metadata:
+                  type: object
+                  description: Additional metadata about the call
+                  properties:
+                    crm_deal_id:
+                      type: string
+                      description: CRM deal/opportunity ID
+                      example: "12345"
+                    call_type:
+                      type: string
+                      description: Type of call (e.g., "discovery", "demo", "negotiation")
+                      example: discovery
+                webhook_url:
+                  type: string
+                  format: uri
+                  description: URL to receive webhook notification when analysis completes
+                  example: https://client-app.com/hooks/sales-ai
+            example:
+              transcript:
+                - speaker: "A"
+                  text: "Hello, how are you?"
+                  timestamp: 0
+                - speaker: "B"
+                  text: "Good, we are worried about pricing."
+                  timestamp: 5
+              metadata:
+                crm_deal_id: "12345"
+                call_type: "discovery"
+              webhook_url: "https://client-app.com/hooks/sales-ai"
+      responses:
+        '200':
+          description: Analysis successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      summary:
+                        type: string
+                        description: High-level summary of the call
+                        example: "Discovery call focused on pricing concerns and revenue growth objectives."
+                      meddic:
+                        type: object
+                        description: MEDDIC framework metrics
+                        properties:
+                          metrics:
+                            type: object
+                            properties:
+                              value:
+                                type: string
+                                example: "Increase revenue by 10%"
+                              evidence_quote:
+                                type: string
+                                example: "We need to hit 10% growth."
+                              confidence:
+                                type: number
+                                format: float
+                                minimum: 0
+                                maximum: 1
+                                example: 0.9
+                          economic_buyer:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: "John Doe"
+                              status:
+                                type: string
+                                enum: [identified, not_identified, unknown]
+                                example: identified
+                          champion:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: "Jane Smith"
+                              status:
+                                type: string
+                                enum: [identified, not_identified, unknown]
+                                example: identified
+                              influence_level:
+                                type: string
+                                enum: [high, medium, low]
+                                example: high
+                          decision_criteria:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                criterion:
+                                  type: string
+                                  example: "Security compliance"
+                                priority:
+                                  type: string
+                                  enum: [high, medium, low]
+                                  example: high
+                          decision_process:
+                            type: object
+                            properties:
+                              timeline:
+                                type: string
+                                example: "Q2 2025"
+                              steps:
+                                type: array
+                                items:
+                                  type: string
+                                example: ["Security review", "Budget approval", "Final decision"]
+                          identify_pain:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                pain:
+                                  type: string
+                                  example: "Current solution lacks scalability"
+                                severity:
+                                  type: string
+                                  enum: [high, medium, low]
+                                  example: high
+                      objections:
+                        type: array
+                        description: Array of identified objections
+                        items:
+                          type: object
+                          properties:
+                            category:
+                              type: string
+                              example: pricing
+                            sub_category:
+                              type: string
+                              example: budget_constraint
+                            quote:
+                              type: string
+                              example: "We are worried about pricing"
+                            timestamp:
+                              type: number
+                              example: 5
+                            handled_effectively:
+                              type: boolean
+                              example: false
+                      next_steps:
+                        type: array
+                        description: Array of identified next steps
+                        items:
+                          type: object
+                          properties:
+                            action:
+                              type: string
+                              example: "Send security whitepaper"
+                            owner:
+                              type: string
+                              example: sales_rep
+                            deadline:
+                              type: string
+                              format: date
+                              example: "2025-10-12"
+                      deal_risk:
+                        type: object
+                        properties:
+                          score:
+                            type: integer
+                            description: Risk score from 0-100 (higher = more risk)
+                            minimum: 0
+                            maximum: 100
+                            example: 75
+                          risk_factors:
+                            type: array
+                            items:
+                              type: string
+                            example: ["No economic buyer present", "Budget unclear"]
+                          recommendations:
+                            type: array
+                            items:
+                              type: string
+                            example: ["Engage with CFO for budget discussion", "Provide ROI analysis"]
+                      crm_actions:
+                        type: array
+                        description: Array of CRM actions to execute
+                        items:
+                          type: object
+                          properties:
+                            action:
+                              type: string
+                              enum: [update_field, create_task, create_note]
+                              example: update_field
+                            target:
+                              type: string
+                              example: opportunity
+                            field:
+                              type: string
+                              example: Budget_Status__c
+                            value:
+                              type: string
+                              example: "At Risk"
+                            subject:
+                              type: string
+                              example: "Send ROI Calculator (Address Price Objection)"
+                            due_date:
+                              type: string
+                              format: date
+                              example: "2025-05-12"
+                            priority:
+                              type: string
+                              enum: [High, Medium, Low]
+                              example: High
+        '400':
+          description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized - Missing or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Include your bearer token in the Authorization header:
+        ```
+        Authorization: Bearer YOUR_TOKEN
+        ```
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+              example: validation_error
+            message:
+              type: string
+              description: Human-readable error message
+              example: Invalid request parameters
+            details:
+              type: object
+              description: Additional error details
+              additionalProperties:
+                type: string
