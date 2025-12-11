@@ -11,7 +11,8 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
+  
+  console.log("testing console")
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
