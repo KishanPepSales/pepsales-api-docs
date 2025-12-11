@@ -32,8 +32,7 @@ Comprehensive endpoint documentation:
 
 - **[API Overview](./reference/overview)** - Get familiar with the API structure
 - **[Authentication Endpoints](./reference/auth)** - User authentication
-- **[User Endpoints](./reference/users)** - User management
-- **[Post Endpoints](./reference/posts)** - Content management
+- **[Analyze Call](./reference/analyze-call)** - Sales call analysis and insights
 - **[Interactive Reference](./reference/api-reference)** - Try endpoints in your browser
 
 ## Features
