@@ -88,6 +88,7 @@ const config = {
           {
             type: 'custom-navbar',
             position: 'right',
+            mobile: false, // hide from mobile drawer; keep only API Reference there
           },
         ],
       },
