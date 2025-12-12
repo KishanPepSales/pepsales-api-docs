@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useColorMode } from '@docusaurus/theme-common';
 import { isAuthenticated } from '../services/authService';
 import LoginModal from './LoginModal';
@@ -12,7 +12,9 @@ import ProfileMenu from './ProfileMenu';
 export default function CustomNavbar() {
   const [authenticated, setAuthenticated] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isInMobileMenu, setIsInMobileMenu] = useState(false);
   const { colorMode, setColorMode } = useColorMode();
+  const containerRef = useRef(null);
 
   useEffect(() => {
     // Check auth state on mount
@@ -30,11 +32,33 @@ export default function CustomNavbar() {
     window.addEventListener('auth-login', handleAuthChange);
     window.addEventListener('auth-logout', handleAuthChange);
 
+    // Check if component is inside mobile menu sidebar
+    const checkMobileMenu = () => {
+      if (containerRef.current) {
+        const parent = containerRef.current.closest('.navbar-sidebar');
+        setIsInMobileMenu(!!parent);
+      }
+    };
+
+    checkMobileMenu();
+    
+    // Recheck when DOM changes (mobile menu opens/closes)
+    const observer = new MutationObserver(checkMobileMenu);
+    if (containerRef.current) {
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+
     return () => {
       window.removeEventListener('auth-login', handleAuthChange);
       window.removeEventListener('auth-logout', handleAuthChange);
+      observer.disconnect();
     };
   }, []);
+
+  // Hide component if it's in mobile menu
+  if (isInMobileMenu) {
+    return null;
+  }
 
   const handleLoginSuccess = () => {
     setAuthenticated(true);
@@ -51,7 +75,7 @@ export default function CustomNavbar() {
 
   return (
     <>
-      <div className="flex items-center gap-3 lg:gap-2">
+      <div ref={containerRef} className="flex items-center gap-3 lg:gap-2">
         {/* Dark Mode Toggle */}
         <button
           className="flex items-center justify-center w-9 h-9 p-0 bg-transparent border-none rounded-lg text-[var(--ifm-navbar-link-color)] cursor-pointer transition-all duration-200 hover:bg-[var(--ifm-color-emphasis-200)] dark:hover:bg-[var(--ifm-color-emphasis-300)] hover:text-[var(--ifm-navbar-link-hover-color)]"

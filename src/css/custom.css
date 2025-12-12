@@ -231,6 +231,60 @@
   background: var(--ifm-background-color);
 }
 
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock-summary-control svg,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .models-control svg,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .model-toggle + svg,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui button svg,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .model-box svg,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock-summary-control svg path,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .models-control svg path,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .model-toggle + svg path {
+  fill: var(--ifm-color-content) !important;
+  stroke: var(--ifm-color-content) !important;
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock-summary-control,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .models-control,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .model-toggle {
+  color: var(--ifm-color-content);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui p,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui li,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui td,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui th {
+  color: var(--ifm-color-content);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock-summary-path,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock-summary-description,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .opblock-tag {
+  color: var(--ifm-color-content);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .response-col_description,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .model,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .model .property,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .parameter__name,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .parameter__type {
+  color: var(--ifm-color-content-secondary);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .microlight,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui pre.microlight {
+  background: var(--ifm-code-background);
+  color: var(--ifm-code-color);
+}
+
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui input,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui select,
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui textarea {
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-content);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
 [data-theme='dark'] .swagger-ui-wrapper .swagger-ui .response-col_status {
   color: var(--ifm-color-content);
 }
@@ -383,6 +437,9 @@ article {
   @apply font-medium;
 }
 
+/* Hide custom navbar items (theme toggle and profile button) in mobile menu drawer */
+/* This is handled by the CustomNavbar component returning null when in mobile menu */
+
 .theme-doc-sidebar-container {
   border-right: 1px solid var(--ifm-color-emphasis-200);
 }
@@ -480,6 +537,7 @@ article {
 .prism-code {
   @apply rounded-lg;
   box-shadow: var(--ifm-global-shadow-lw);
+  padding: 1rem !important;
 }
 
 /* ============================================
