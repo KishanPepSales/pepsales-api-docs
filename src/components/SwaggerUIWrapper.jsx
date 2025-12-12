@@ -14,6 +14,7 @@ export default function SwaggerUIWrapper({ specUrl, specObj, ...rest }) {
 
   // Priority: specObj (object) > specUrl (URL string)
   const swaggerProps = specObj ? { spec: specObj } : { url: specUrl };
+  console.log("swaggerProps>>>", swaggerProps);
 
   useEffect(() => {
     // Auto-scroll to first endpoint on load
@@ -38,7 +39,7 @@ export default function SwaggerUIWrapper({ specUrl, specObj, ...rest }) {
         defaultModelsExpandDepth={1}
         defaultModelExpandDepth={1}
         docExpansion="list"
-        filter={true}
+        filter={false}
         showExtensions={true}
         showCommonExtensions={true}
         tryItOutEnabled={true}

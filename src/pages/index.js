@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import { FaLock, FaBook, FaExclamationTriangle, FaBolt } from 'react-icons/fa';
+import { FiLock, FiBookOpen, FiAlertTriangle, FiZap } from 'react-icons/fi';
 
 export default function Home() {
   const {siteConfig} = useDocusaurusContext();
@@ -31,12 +31,12 @@ export default function Home() {
                   View API Reference
                 </Link>
               </div>
-              <div className="mt-8">
+              {/* <div className="mt-8">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-sm">
                   <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                   <span>All systems operational</span>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -48,25 +48,25 @@ export default function Home() {
             <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6 my-12">
               <Link to="/docs/guides/authentication" className="p-6 rounded-lg bg-[var(--ifm-background-surface-color)] border border-[var(--ifm-color-emphasis-300)] transition-all duration-200 block no-underline text-[var(--ifm-font-color-base)] hover:border-[var(--ifm-color-primary)] hover:shadow-md hover:-translate-y-0.5 hover:no-underline hover:text-[var(--ifm-font-color-base)]">
                 <h3 className="mt-0 text-[var(--ifm-color-primary)] flex items-center gap-2">
-                  <FaLock /> Authentication
+                  <FiLock aria-hidden="true" /> Authentication
                 </h3>
                 <p>Learn how to authenticate your API requests and manage tokens securely.</p>
               </Link>
               <Link to="/docs/reference/api-reference" className="p-6 rounded-lg bg-[var(--ifm-background-surface-color)] border border-[var(--ifm-color-emphasis-300)] transition-all duration-200 block no-underline text-[var(--ifm-font-color-base)] hover:border-[var(--ifm-color-primary)] hover:shadow-md hover:-translate-y-0.5 hover:no-underline hover:text-[var(--ifm-font-color-base)]">
                 <h3 className="mt-0 text-[var(--ifm-color-primary)] flex items-center gap-2">
-                  <FaBook /> API Reference
+                  <FiBookOpen aria-hidden="true" /> API Reference
                 </h3>
                 <p>Explore all available endpoints with interactive documentation and examples.</p>
               </Link>
               <Link to="/docs/guides/errors" className="p-6 rounded-lg bg-[var(--ifm-background-surface-color)] border border-[var(--ifm-color-emphasis-300)] transition-all duration-200 block no-underline text-[var(--ifm-font-color-base)] hover:border-[var(--ifm-color-primary)] hover:shadow-md hover:-translate-y-0.5 hover:no-underline hover:text-[var(--ifm-font-color-base)]">
                 <h3 className="mt-0 text-[var(--ifm-color-primary)] flex items-center gap-2">
-                  <FaExclamationTriangle /> Error Handling
+                  <FiAlertTriangle aria-hidden="true" /> Error Handling
                 </h3>
                 <p>Understand error responses and implement robust error handling in your app.</p>
               </Link>
               <Link to="/docs/guides/rate-limits" className="p-6 rounded-lg bg-[var(--ifm-background-surface-color)] border border-[var(--ifm-color-emphasis-300)] transition-all duration-200 block no-underline text-[var(--ifm-font-color-base)] hover:border-[var(--ifm-color-primary)] hover:shadow-md hover:-translate-y-0.5 hover:no-underline hover:text-[var(--ifm-font-color-base)]">
                 <h3 className="mt-0 text-[var(--ifm-color-primary)] flex items-center gap-2">
-                  <FaBolt /> Rate Limits
+                  <FiZap aria-hidden="true" /> Rate Limits
                 </h3>
                 <p>Learn about API usage limits and best practices for managing requests.</p>
               </Link>

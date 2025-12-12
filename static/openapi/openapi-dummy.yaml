@@ -17,18 +17,20 @@ info:
     All requests should be made to the base URL with the version prefix:
     ```
     https://api1.pepsales.xyz
-    ```
-  version: "1.0.0"
-  contact:
-    name: API Support
-    email: support@example.com
-  license:
-    name: MIT
-    url: https://opensource.org/licenses/MIT
+  #   ```
+  # version: "1.0.0"
+  # contact:
+  #   name: API Support
+  #   email: support@example.com
+  # license:
+  #   name: MIT
+  #   url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://api1.pepsales.xyz
+  - url: http://13.48.104.222:8000
     description: Production server
+  - url: https://api1.pepsales.xyz
+    description: Legacy server
 
 tags:
   - name: Authentication
@@ -109,18 +111,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /v1/analyze_call:
+  /v1/meeting-insights:
     post:
       tags:
         - Analyze Call
       summary: Analyze sales call transcript
       description: |
-        Analyze a sales call transcript to extract insights, MEDDIC metrics, objections, next steps, deal risk, and generate CRM actions.
+        Analyze a sales call transcript to extract insights, call summary, follow-up email, sales framework metrics, key points, and questions.
         
-        The analysis is performed asynchronously. If a `webhook_url` is provided, you'll receive a notification when the analysis completes.
+        The analysis is performed synchronously and returns results immediately.
       operationId: analyzeCall
-      security:
-        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -129,58 +129,73 @@ paths:
               type: object
               required:
                 - transcript
+                - llm_provider
               properties:
                 transcript:
                   type: array
-                  description: Array of transcript entries with speaker, text, and timestamp
+                  description: Array of transcript entries
                   items:
                     type: object
                     required:
                       - speaker
+                      - speaker_id
                       - text
-                      - timestamp
+                      - start_timestamp
+                      - end_timestamp
+                      - is_seller
                     properties:
                       speaker:
                         type: string
-                        description: Speaker identifier (e.g., "A", "B", "Sales Rep", "Prospect")
-                        example: A
+                        description: Speaker name
+                        example: "Andy Waterhouse"
+                      speaker_id:
+                        type: integer
+                        description: Speaker identifier
+                        example: 50332672
                       text:
                         type: string
                         description: The spoken text content
-                        example: Hello, how are you?
-                      timestamp:
+                        example: "Each other. So we don't get to meet physically. I mean, we talk on a r…"
+                      start_timestamp:
                         type: number
-                        description: Timestamp in seconds from call start
-                        example: 0
-                metadata:
-                  type: object
-                  description: Additional metadata about the call
-                  properties:
-                    crm_deal_id:
-                      type: string
-                      description: CRM deal/opportunity ID
-                      example: "12345"
-                    call_type:
-                      type: string
-                      description: Type of call (e.g., "discovery", "demo", "negotiation")
-                      example: discovery
-                webhook_url:
+                        format: float
+                        description: Start time in seconds
+                        example: 0.18000000715255737
+                      end_timestamp:
+                        type: number
+                        format: float
+                        description: End time in seconds
+                        example: 43.29999923706055
+                      language:
+                        type: string
+                        nullable: true
+                        description: Language code if available
+                        example: null
+                      is_seller:
+                        type: boolean
+                        description: Indicates if the speaker is the seller
+                        example: false
+                llm_provider:
                   type: string
-                  format: uri
-                  description: URL to receive webhook notification when analysis completes
-                  example: https://client-app.com/hooks/sales-ai
+                  description: LLM provider (e.g., "openai")
+                  example: "openai"
             example:
               transcript:
-                - speaker: "A"
-                  text: "Hello, how are you?"
-                  timestamp: 0
-                - speaker: "B"
-                  text: "Good, we are worried about pricing."
-                  timestamp: 5
-              metadata:
-                crm_deal_id: "12345"
-                call_type: "discovery"
-              webhook_url: "https://client-app.com/hooks/sales-ai"
+                - end_timestamp: 43.29999923706055
+                  language: null
+                  speaker: "Andy Waterhouse"
+                  speaker_id: 50332672
+                  start_timestamp: 0.18000000715255737
+                  text: "Each other. So we don't get to meet physically. I mean, we talk on a r…"
+                  is_seller: false
+                - end_timestamp: 52.91999816894531
+                  language: null
+                  speaker: "Ajay Singh"
+                  speaker_id: 16778240
+                  start_timestamp: 45.56999969482422
+                  text: "We are planning to take a break in December, so we're going to Bali. F…"
+                  is_seller: true
+              llm_provider: "openai"
       responses:
         '200':
           description: Analysis successful
@@ -195,174 +210,99 @@ paths:
                   data:
                     type: object
                     properties:
-                      summary:
+                      call_summary:
                         type: string
-                        description: High-level summary of the call
-                        example: "Discovery call focused on pricing concerns and revenue growth objectives."
-                      meddic:
+                        description: High-level summary of the call conversation
+                        example: "Casual conversation with no business-related insights."
+                      follow_up_email:
                         type: object
-                        description: MEDDIC framework metrics
                         properties:
-                          metrics:
-                            type: object
-                            properties:
-                              value:
-                                type: string
-                                example: "Increase revenue by 10%"
-                              evidence_quote:
-                                type: string
-                                example: "We need to hit 10% growth."
-                              confidence:
-                                type: number
-                                format: float
-                                minimum: 0
-                                maximum: 1
-                                example: 0.9
-                          economic_buyer:
-                            type: object
-                            properties:
-                              name:
-                                type: string
-                                example: "John Doe"
-                              status:
-                                type: string
-                                enum: [identified, not_identified, unknown]
-                                example: identified
-                          champion:
-                            type: object
-                            properties:
-                              name:
-                                type: string
-                                example: "Jane Smith"
-                              status:
-                                type: string
-                                enum: [identified, not_identified, unknown]
-                                example: identified
-                              influence_level:
-                                type: string
-                                enum: [high, medium, low]
-                                example: high
-                          decision_criteria:
+                          email:
+                            type: string
+                            description: Generated follow-up email content
+                            example: "Hi Andy,\n\nThanks for the chat. No action items.\n\nRegards,\nAjay"
+                      sales_framework:
+                        type: object
+                        properties:
+                          total_score:
+                            type: number
+                            description: Total sales framework score
+                            example: 0
+                          parameters:
                             type: array
+                            description: Array of sales framework parameters
                             items:
                               type: object
                               properties:
-                                criterion:
+                                parameter:
                                   type: string
-                                  example: "Security compliance"
-                                priority:
+                                  description: Parameter name (e.g., "Metrics")
+                                  example: "Metrics"
+                                score:
+                                  type: number
+                                  description: Score for this parameter
+                                  example: 0
+                                explanation:
                                   type: string
-                                  enum: [high, medium, low]
-                                  example: high
-                          decision_process:
-                            type: object
-                            properties:
-                              timeline:
-                                type: string
-                                example: "Q2 2025"
-                              steps:
-                                type: array
-                                items:
-                                  type: string
-                                example: ["Security review", "Budget approval", "Final decision"]
-                          identify_pain:
+                                  description: Explanation of the score
+                                  example: "No business metrics discussed."
+                      key_points:
+                        type: object
+                        properties:
+                          key_points:
                             type: array
+                            description: Array of key points extracted from the call
                             items:
                               type: object
                               properties:
-                                pain:
+                                heading:
                                   type: string
-                                  example: "Current solution lacks scalability"
-                                severity:
+                                  description: Heading for the key point
+                                  example: "No Key Points"
+                                key_point:
                                   type: string
-                                  enum: [high, medium, low]
-                                  example: high
-                      objections:
-                        type: array
-                        description: Array of identified objections
-                        items:
-                          type: object
-                          properties:
-                            category:
-                              type: string
-                              example: pricing
-                            sub_category:
-                              type: string
-                              example: budget_constraint
-                            quote:
-                              type: string
-                              example: "We are worried about pricing"
-                            timestamp:
-                              type: number
-                              example: 5
-                            handled_effectively:
-                              type: boolean
-                              example: false
-                      next_steps:
-                        type: array
-                        description: Array of identified next steps
-                        items:
-                          type: object
-                          properties:
-                            action:
-                              type: string
-                              example: "Send security whitepaper"
-                            owner:
-                              type: string
-                              example: sales_rep
-                            deadline:
-                              type: string
-                              format: date
-                              example: "2025-10-12"
-                      deal_risk:
+                                  description: Description of the key point
+                                  example: "No business-relevant content."
+                      metrics:
+                        type: object
+                        description: Extracted business metrics (varies by call content)
+                        additionalProperties: true
+                        example: {}
+                      questions:
                         type: object
                         properties:
-                          score:
-                            type: integer
-                            description: Risk score from 0-100 (higher = more risk)
-                            minimum: 0
-                            maximum: 100
-                            example: 75
-                          risk_factors:
+                          buyer_questions:
                             type: array
+                            description: Array of questions asked by the buyer
                             items:
                               type: string
-                            example: ["No economic buyer present", "Budget unclear"]
-                          recommendations:
+                            example: []
+                          seller_questions:
                             type: array
+                            description: Array of questions asked by the seller
                             items:
                               type: string
-                            example: ["Engage with CFO for budget discussion", "Provide ROI analysis"]
-                      crm_actions:
-                        type: array
-                        description: Array of CRM actions to execute
-                        items:
-                          type: object
-                          properties:
-                            action:
-                              type: string
-                              enum: [update_field, create_task, create_note]
-                              example: update_field
-                            target:
-                              type: string
-                              example: opportunity
-                            field:
-                              type: string
-                              example: Budget_Status__c
-                            value:
-                              type: string
-                              example: "At Risk"
-                            subject:
-                              type: string
-                              example: "Send ROI Calculator (Address Price Objection)"
-                            due_date:
-                              type: string
-                              format: date
-                              example: "2025-05-12"
-                            priority:
-                              type: string
-                              enum: [High, Medium, Low]
-                              example: High
+                            example: []
+              example:
+                status: success
+                data:
+                  call_summary: "Casual conversation with no business-related insights."
+                  follow_up_email:
+                    email: "Hi Andy,\n\nThanks for the chat. No action items.\n\nRegards,\nAjay"
+                  sales_framework:
+                    total_score: 0
+                    parameters:
+                      - parameter: "Metrics"
+                        score: 0
+                        explanation: "No business metrics discussed."
+                  key_points:
+                    key_points:
+                      - heading: "No Key Points"
+                        key_point: "No business-relevant content."
+                  metrics: {}
+                  questions:
+                    buyer_questions: []
+                    seller_questions: []
         '400':
           description: Invalid request format
           content:
@@ -414,3 +354,124 @@ components:
               description: Additional error details
               additionalProperties:
                 type: string
+    CallAnalysisRequest:
+      type: object
+      required:
+        - transcript
+        - llm_provider
+      properties:
+        transcript:
+          type: array
+          description: Array of transcript segments generated from call audio.
+          items:
+            type: object
+            required:
+              - speaker
+              - speaker_id
+              - start_timestamp
+              - end_timestamp
+              - text
+              - is_seller
+            properties:
+              start_timestamp:
+                type: number
+                example: 0.18
+              end_timestamp:
+                type: number
+                example: 43.30
+              speaker:
+                type: string
+                example: "Andy Waterhouse"
+              speaker_id:
+                type: integer
+                example: 50332672
+              language:
+                type: string
+                nullable: true
+                example: null
+              text:
+                type: string
+                example: "Each other. So we don't get to meet physically..."
+              is_seller:
+                type: boolean
+                example: false
+        llm_provider:
+          type: string
+          description: LLM provider (e.g., "openai")
+          example: "openai"
+    CallAnalysisResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          type: object
+          properties:
+            call_summary:
+              type: string
+              example: Casual conversation with no business-related insights.
+            follow_up_email:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: |-
+                    Hi Andy,
+
+                    Thanks for the chat. No action items.
+
+                    Regards,
+                    Ajay
+            sales_framework:
+              type: object
+              properties:
+                total_score:
+                  type: integer
+                  example: 0
+                parameters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      parameter:
+                        type: string
+                        example: Metrics
+                      score:
+                        type: integer
+                        example: 0
+                      explanation:
+                        type: string
+                        example: No business metrics discussed.
+            key_points:
+              type: object
+              properties:
+                key_points:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      heading:
+                        type: string
+                        example: No Key Points
+                      key_point:
+                        type: string
+                        example: No business-relevant content.
+            metrics:
+              type: object
+              description: Extracted business metrics (varies by call content)
+              additionalProperties: true
+              example: {}
+            questions:
+              type: object
+              properties:
+                buyer_questions:
+                  type: array
+                  items:
+                    type: string
+                  example: []
+                seller_questions:
+                  type: array
+                  items:
+                    type: string
+                  example: []
