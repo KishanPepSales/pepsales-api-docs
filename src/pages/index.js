@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { FaLock, FaBook, FaExclamationTriangle, FaBolt } from 'react-icons/fa';
 
 export default function Home() {
   const {siteConfig} = useDocusaurusContext();
@@ -46,19 +47,27 @@ export default function Home() {
             <h2 className="text-center mb-12">Quick Links</h2>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6 my-12">
               <Link to="/docs/guides/authentication" className="p-6 rounded-lg bg-[var(--ifm-background-surface-color)] border border-[var(--ifm-color-emphasis-300)] transition-all duration-200 block no-underline text-[var(--ifm-font-color-base)] hover:border-[var(--ifm-color-primary)] hover:shadow-md hover:-translate-y-0.5 hover:no-underline hover:text-[var(--ifm-font-color-base)]">
-                <h3 className="mt-0 text-[var(--ifm-color-primary)]">🔐 Authentication</h3>
+                <h3 className="mt-0 text-[var(--ifm-color-primary)] flex items-center gap-2">
+                  <FaLock /> Authentication
+                </h3>
                 <p>Learn how to authenticate your API requests and manage tokens securely.</p>
               </Link>
               <Link to="/docs/reference/api-reference" className="p-6 rounded-lg bg-[var(--ifm-background-surface-color)] border border-[var(--ifm-color-emphasis-300)] transition-all duration-200 block no-underline text-[var(--ifm-font-color-base)] hover:border-[var(--ifm-color-primary)] hover:shadow-md hover:-translate-y-0.5 hover:no-underline hover:text-[var(--ifm-font-color-base)]">
-                <h3 className="mt-0 text-[var(--ifm-color-primary)]">📚 API Reference</h3>
+                <h3 className="mt-0 text-[var(--ifm-color-primary)] flex items-center gap-2">
+                  <FaBook /> API Reference
+                </h3>
                 <p>Explore all available endpoints with interactive documentation and examples.</p>
               </Link>
               <Link to="/docs/guides/errors" className="p-6 rounded-lg bg-[var(--ifm-background-surface-color)] border border-[var(--ifm-color-emphasis-300)] transition-all duration-200 block no-underline text-[var(--ifm-font-color-base)] hover:border-[var(--ifm-color-primary)] hover:shadow-md hover:-translate-y-0.5 hover:no-underline hover:text-[var(--ifm-font-color-base)]">
-                <h3 className="mt-0 text-[var(--ifm-color-primary)]">⚠️ Error Handling</h3>
+                <h3 className="mt-0 text-[var(--ifm-color-primary)] flex items-center gap-2">
+                  <FaExclamationTriangle /> Error Handling
+                </h3>
                 <p>Understand error responses and implement robust error handling in your app.</p>
               </Link>
               <Link to="/docs/guides/rate-limits" className="p-6 rounded-lg bg-[var(--ifm-background-surface-color)] border border-[var(--ifm-color-emphasis-300)] transition-all duration-200 block no-underline text-[var(--ifm-font-color-base)] hover:border-[var(--ifm-color-primary)] hover:shadow-md hover:-translate-y-0.5 hover:no-underline hover:text-[var(--ifm-font-color-base)]">
-                <h3 className="mt-0 text-[var(--ifm-color-primary)]">⚡ Rate Limits</h3>
+                <h3 className="mt-0 text-[var(--ifm-color-primary)] flex items-center gap-2">
+                  <FaBolt /> Rate Limits
+                </h3>
                 <p>Learn about API usage limits and best practices for managing requests.</p>
               </Link>
             </div>

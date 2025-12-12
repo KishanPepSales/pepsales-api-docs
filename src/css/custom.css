@@ -480,6 +480,7 @@ article {
 .prism-code {
   @apply rounded-lg;
   box-shadow: var(--ifm-global-shadow-lw);
+  padding-left: 1rem !important;
 }
 
 /* ============================================
