@@ -17,7 +17,7 @@ const STORAGE_KEYS = {
  */
 export async function login(email, password) {
   try {
-    const response = await fetch('https://api1.pepsales.xyz/auth/login', {
+    const response = await fetch('https://dev2-api.pepsales.xyz/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
