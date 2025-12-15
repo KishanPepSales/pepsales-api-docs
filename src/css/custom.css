@@ -208,6 +208,21 @@
   border-color: var(--ifm-color-primary-dark);
 }
 
+.footer__link-item {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer__link-item:hover{
+  color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .footer__link-item:hover{
+  color: var(--ifm-color-primary-light);
+}
+
 /* Dark mode Swagger UI adjustments */
 [data-theme='dark'] .swagger-ui-wrapper .swagger-ui {
   background: var(--ifm-background-color);
@@ -292,7 +307,12 @@
 [data-theme='dark'] .swagger-ui-wrapper .swagger-ui .response-col_description {
   color: var(--ifm-color-content-secondary);
 }
-
+/* .swagger-container .swagger-ui-wrapper .swagger-ui .wrapper .models .no-margin #model-error .model-box #model-box-control .model-toggle collapsed{
+  color:red !important;
+} */
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .wrapper .models .no-margin .model-box .model-toggle  {
+  background-color: white !important;
+}
 /* ============================================
    Typography & Layout
    ============================================ */
@@ -412,29 +432,69 @@ article {
 
 .navbar__logo {
   @apply h-8 mr-4;
+  transition: none;
+}
+
+.navbar__logo:hover {
+  opacity: 1;
 }
 
 .navbar__title {
-  @apply font-semibold transition-opacity duration-200;
+  @apply font-semibold;
   color: var(--ifm-font-color-base);
+  transition: color 0.2s ease;
 }
 
 .navbar__title:hover {
-  @apply opacity-80;
+  color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .navbar__title:hover {
+  color: var(--ifm-color-primary-light);
 }
 
 .navbar__brand {
   @apply no-underline;
   color: var(--ifm-font-color-base);
+  transition: none;
 }
 
 .navbar__brand:hover {
-  @apply no-underline opacity-80;
+  @apply no-underline;
   color: var(--ifm-font-color-base);
+  opacity: 1;
 }
 
 .navbar__item {
   @apply font-medium;
+}
+
+/* Navbar link hover styling (excluding brand/logo) */
+.navbar__items .navbar__link:hover {
+  color: var(--ifm-color-primary);
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .navbar__items .navbar__link:hover {
+  color: var(--ifm-color-primary-light);
+}
+
+/* Active navbar link styling */
+.navbar__link--active {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+.navbar__link--active:hover {
+  color: var(--ifm-color-primary-dark);
+}
+
+[data-theme='dark'] .navbar__link--active {
+  color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .navbar__link--active:hover {
+  color: var(--ifm-color-primary-light);
 }
 
 /* Hide custom navbar items (theme toggle and profile button) in mobile menu drawer */
