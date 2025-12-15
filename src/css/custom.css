@@ -675,6 +675,62 @@ article {
 }
 
 /* ============================================
+   Table of Contents (TOC)
+   ============================================ */
+.table-of-contents__link {
+  transition: color 0.2s ease;
+  color: var(--ifm-color-content-secondary);
+  text-decoration: none;
+}
+
+.table-of-contents__link:hover {
+  color: var(--ifm-color-primary) !important;
+  text-decoration: none;
+}
+
+/* Active state - must have high specificity to override default styles */
+.table-of-contents__link--active,
+.table-of-contents__link.table-of-contents__link--active {
+  color: var(--ifm-color-primary) !important;
+  font-weight: 600;
+}
+
+.table-of-contents__link--active:hover,
+.table-of-contents__link.table-of-contents__link--active:hover {
+  color: var(--ifm-color-primary-dark) !important;
+}
+
+[data-theme='dark'] .table-of-contents__link--active,
+[data-theme='dark'] .table-of-contents__link.table-of-contents__link--active {
+  color: var(--ifm-color-primary-light) !important;
+}
+
+[data-theme='dark'] .table-of-contents__link--active:hover,
+[data-theme='dark'] .table-of-contents__link.table-of-contents__link--active:hover {
+  color: var(--ifm-color-primary) !important;
+}
+
+/* Ensure TOC links are properly styled at all depth levels */
+.table-of-contents__link--depth-2,
+.table-of-contents__link--depth-3,
+.table-of-contents__link--depth-4 {
+  transition: color 0.2s ease;
+}
+
+.table-of-contents__link--depth-2.table-of-contents__link--active,
+.table-of-contents__link--depth-3.table-of-contents__link--active,
+.table-of-contents__link--depth-4.table-of-contents__link--active {
+  color: var(--ifm-color-primary) !important;
+  font-weight: 600;
+}
+
+[data-theme='dark'] .table-of-contents__link--depth-2.table-of-contents__link--active,
+[data-theme='dark'] .table-of-contents__link--depth-3.table-of-contents__link--active,
+[data-theme='dark'] .table-of-contents__link--depth-4.table-of-contents__link--active {
+  color: var(--ifm-color-primary-light) !important;
+}
+
+/* ============================================
    Responsive Design
    ============================================ */
 @media (max-width: 996px) {
