@@ -208,6 +208,21 @@
   border-color: var(--ifm-color-primary-dark);
 }
 
+.footer__link-item {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer__link-item:hover{
+  color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .footer__link-item:hover{
+  color: var(--ifm-color-primary-light);
+}
+
 /* Dark mode Swagger UI adjustments */
 [data-theme='dark'] .swagger-ui-wrapper .swagger-ui {
   background: var(--ifm-background-color);
@@ -292,7 +307,12 @@
 [data-theme='dark'] .swagger-ui-wrapper .swagger-ui .response-col_description {
   color: var(--ifm-color-content-secondary);
 }
-
+/* .swagger-container .swagger-ui-wrapper .swagger-ui .wrapper .models .no-margin #model-error .model-box #model-box-control .model-toggle collapsed{
+  color:red !important;
+} */
+[data-theme='dark'] .swagger-ui-wrapper .swagger-ui .wrapper .models .no-margin .model-box .model-toggle  {
+  background-color: white !important;
+}
 /* ============================================
    Typography & Layout
    ============================================ */
